@@ -9,8 +9,8 @@ spring:
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521:xe
-    username: quankm
-    password: admin
+    username: team2
+    password: wibu123456
 
   jpa:
     show-sql: true
@@ -20,8 +20,8 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    username: thuhientd999@gmail.com
-    password: thuhien999
+    username: thanhlonghoangdao1101@gmail.com
+    password: noyurengqrwgldtb
     port: 587
     properties:
       mail:
