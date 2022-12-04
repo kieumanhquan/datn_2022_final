@@ -55,10 +55,11 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 
     @Override
     public Boolean signup(@NotNull UserDTO dto, String role) {
-//        if (!userRepository.findOneByEmail(dto.getEmail()).isPresent()
-//                && !userRepository.findByUserName(dto.getUserName()).isPresent()
-//                && !userRepository.findByPhoneNumber(dto.getPhoneNumber()).isPresent())
-        if (!userRepository.findByUserName(dto.getUserName()).isPresent()) {
+        if (!userRepository.findOneByEmail(dto.getEmail()).isPresent()
+                && !userRepository.findByUserName(dto.getUserName()).isPresent()
+                && !userRepository.findByPhoneNumber(dto.getPhoneNumber()).isPresent())
+//        if (!userRepository.findByUserName(dto.getUserName()).isPresent())
+        {
             try {
                 Set<Role> roles = roleRepository.findByCode(role);
                 User user = userMapper.toEntity(dto);
@@ -67,10 +68,10 @@ public class AuthenticateServiceImpl implements AuthenticateService {
                 user.setRoles(roles);
                 user.setFirstTimeLogin(false);
                 userRepository.save(user);
-//                OTP otp = new OTP(user);
-//                otpRepository.save(otp);
-//                String link = emailService.buildActiveEmail(user.getName(), otp.getCode(), user.getId());
-//                emailService.send(user.getEmail(), link, "Confirm email");
+                OTP otp = new OTP(user);
+                otpRepository.save(otp);
+                String link = emailService.buildActiveEmail(user.getName(), otp.getCode(), user.getId());
+                emailService.send(user.getEmail(), link, "Confirm email");
                 return true;
             } catch (Exception e) {
                 log.error("cannot save to database");
