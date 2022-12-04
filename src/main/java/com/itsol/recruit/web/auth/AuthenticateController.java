@@ -1,5 +1,7 @@
 package com.itsol.recruit.web.auth;
 
+import com.itsol.recruit.common.BaseResponse;
+import com.itsol.recruit.common.ResponseBuilder;
 import com.itsol.recruit.core.Constants;
 import com.itsol.recruit.dto.MessageDto;
 import com.itsol.recruit.dto.UserDTO;
@@ -44,14 +46,16 @@ public class AuthenticateController {
     }
 
      @PostMapping(Constants.Api.Path.Account.REGISTER)
-    public ResponseEntity<Boolean> registerUser(@Valid @RequestBody UserDTO dto) {
-        return ResponseEntity.ok().body(authenticateService.signup(dto, Constants.Role.USER));
+    public ResponseEntity<BaseResponse> registerUser(@Valid @RequestBody UserDTO dto) {
+        return ResponseBuilder.build(authenticateService.signup(dto, Constants.Role.USER));
+//        return ResponseEntity.ok().body(authenticateService.signup(dto, Constants.Role.USER));
     }
 
 
     @PostMapping(Constants.Api.Path.Account.REGISTER + "Je")
-    public ResponseEntity<Boolean> registerJe(@Valid @RequestBody UserDTO dto) {
-        return ResponseEntity.ok().body(authenticateService.signup(dto, Constants.Role.JE));
+    public ResponseEntity<BaseResponse<Boolean>> registerJe(@Valid @RequestBody UserDTO dto) {
+        return ResponseBuilder.build(authenticateService.signup(dto, Constants.Role.JE  ));
+//        return ResponseEntity.ok().body(authenticateService.signup(dto, Constants.Role.JE));
     }
 
     @PostMapping(Constants.Api.Path.Account.CHANGE_PASSWORD)

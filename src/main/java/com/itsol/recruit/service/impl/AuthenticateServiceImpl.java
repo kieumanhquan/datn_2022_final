@@ -1,5 +1,7 @@
 package com.itsol.recruit.service.impl;
 
+import com.itsol.recruit.common.BaseResponse;
+import com.itsol.recruit.common.ResponseStatus;
 import com.itsol.recruit.dto.MessageDto;
 import com.itsol.recruit.dto.UserDTO;
 import com.itsol.recruit.entity.OTP;
@@ -54,12 +56,14 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     }
 
     @Override
-    public Boolean signup(@NotNull UserDTO dto, String role) {
-        if (!userRepository.findOneByEmail(dto.getEmail()).isPresent()
-                && !userRepository.findByUserName(dto.getUserName()).isPresent()
-                && !userRepository.findByPhoneNumber(dto.getPhoneNumber()).isPresent())
-//        if (!userRepository.findByUserName(dto.getUserName()).isPresent())
-        {
+    public BaseResponse signup(@NotNull UserDTO dto, String role) {
+        if (userRepository.findByUserName(dto.getUserName()).isPresent()) {
+            return BaseResponse.onError(ResponseStatus.USERNAME_ALREADY_EXIST);
+        } else if (userRepository.findOneByEmail(dto.getEmail()).isPresent()) {
+            return BaseResponse.onError(ResponseStatus.EMAIL_ALREADY_EXIST);
+        } else if (userRepository.findByPhoneNumber(dto.getPhoneNumber()).isPresent()) {
+            return BaseResponse.onError(ResponseStatus.PHONE_NUMBER_ALREADY_EXIST);
+        } else {
             try {
                 Set<Role> roles = roleRepository.findByCode(role);
                 User user = userMapper.toEntity(dto);
@@ -72,12 +76,33 @@ public class AuthenticateServiceImpl implements AuthenticateService {
                 otpRepository.save(otp);
                 String link = emailService.buildActiveEmail(user.getName(), otp.getCode(), user.getId());
                 emailService.send(user.getEmail(), link, "Confirm email");
-                return true;
             } catch (Exception e) {
-                log.error("cannot save to database");
-                return false;
+                throw new RuntimeException(e);
             }
-        } else return false;
+            return BaseResponse.onOk();
+        }
+//        if (!userRepository.findOneByEmail(dto.getEmail()).isPresent()
+//                && !userRepository.findByUserName(dto.getUserName()).isPresent()
+//                && !userRepository.findByPhoneNumber(dto.getPhoneNumber()).isPresent())
+//        {
+//            try {
+//                Set<Role> roles = roleRepository.findByCode(role);
+//                User user = userMapper.toEntity(dto);
+//                user.setPassword(passwordEncoder.encode(user.getPassword()));
+//                user.setActive(true);
+//                user.setRoles(roles);
+//                user.setFirstTimeLogin(false);
+//                userRepository.save(user);
+//                OTP otp = new OTP(user);
+//                otpRepository.save(otp);
+//                String link = emailService.buildActiveEmail(user.getName(), otp.getCode(), user.getId());
+//                emailService.send(user.getEmail(), link, "Confirm email");
+//                return true;
+//            } catch (Exception e) {
+//                log.error("cannot save to database");
+//                return false;
+//            }
+//        } else return false;
     }
 
     @Override

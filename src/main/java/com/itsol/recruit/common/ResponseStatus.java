@@ -7,7 +7,7 @@ public enum ResponseStatus {
     CREATED(HttpStatus.CREATED, "Created"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST,"Bad request!"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST,"Email đã tồn tại!"),
-    USERNAME_ALREADY_EXIST(HttpStatus.BAD_REQUEST,"Tên đăng nhập đã tồn tại!"),
+    USERNAME_ALREADY_EXIST(HttpStatus.BAD_REQUEST,"Tên tài khoản đã tồn tại!"),
     PHONE_NUMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST,"Số điện thoại đã tồn tại !"),
     CANDIDATE_NOT_REGISTERED(HttpStatus.BAD_REQUEST,"Candidate not registered!"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized!"),
