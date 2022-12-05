@@ -67,19 +67,21 @@ public class OtpServiceImpl implements OtpService {
         try {
             User user = userRepository.findOneByEmail(userDTO.getEmail()).get();
             System.out.println(user);
-            if (user ==  null) {
+            if (user == null) {
                 messageDto.setMessage("Email not found.");
                 messageDto.setObj(false);
             } else {
                 OTP otp = new OTP(user);
-                OTP oldOtp = otpRepository.findOneByUser(user);
-                if (oldOtp != null) {
-                    oldOtp.setCode(otp.getCode());
-                    oldOtp.setIssueAt(otp.getIssueAt());
-                    otpRepository.save(oldOtp);
-                } else {
-                    otpRepository.save(otp);
-                }
+//                OTP oldOtp = otpRepository.findOneByUser(user);
+//                if (oldOtp != null) {
+//                    oldOtp.setCode(otp.getCode());
+//                    oldOtp.setIssueAt(otp.getIssueAt());
+//                    otpRepository.save(oldOtp);
+//                } else {
+//                    otpRepository.save(otp);
+//                }
+                otpRepository.deleteByUser(user);
+                otpRepository.save(otp);
                 String email = emailService.buildOtpEmail(user.getName(), otp.getCode());
                 emailService.send(user.getEmail(), email, "Confirm email");
                 messageDto.setMessage("OTP code sent to mail: " + user.getEmail());

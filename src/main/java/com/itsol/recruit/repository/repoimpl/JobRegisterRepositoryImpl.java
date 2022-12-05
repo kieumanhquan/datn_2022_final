@@ -43,6 +43,9 @@ public class JobRegisterRepositoryImpl extends BaseRepository implements JobRegi
 
     @Override
     public JobRegisterPaginationDto search(SearchJobRegisterVM searchJobRegisterVM, String orderName, Integer pageNumber, Integer pageSize) {
+        if (searchJobRegisterVM.getStatusRegisterId() == 0){
+            searchJobRegisterVM.setStatusRegisterId(null);
+        }
         try{
             String query = SqlReader.getSqlQueryById(SqlReader.ADMIN_MODULE, "searchJobRegister");
             Map<String, Object> parameters = new HashMap<>();

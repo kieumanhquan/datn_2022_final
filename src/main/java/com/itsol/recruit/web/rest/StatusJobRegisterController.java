@@ -21,7 +21,7 @@ public class StatusJobRegisterController {
 
     @GetMapping("/status-register-jobs")
     public List<StatusJobRegister> findAllStatusJobRegister() {
-        return statusJobRegisterRepository.findAll();
+        return statusJobRegisterRepository.findAllByOrderByIdAsc();
     }
 
 }
