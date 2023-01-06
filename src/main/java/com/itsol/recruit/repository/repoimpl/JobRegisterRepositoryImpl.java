@@ -51,6 +51,10 @@ public class JobRegisterRepositoryImpl extends BaseRepository implements JobRegi
                 query += " and UPPER(users.name) like :p_name";
                 parameters.put("p_name","%"+name+"%");
             }
+            if (!ObjectUtils.isEmpty(searchJobRegisterVM.getJobId())) {
+                query += " and job.id = :job_id";
+                parameters.put("job_id",searchJobRegisterVM.getJobId());
+            }
             if (!ObjectUtils.isEmpty(searchJobRegisterVM.getStatusRegisterId())) {
                 query += " and job_register.status_id = :p_status_id";
                 parameters.put("p_status_id",searchJobRegisterVM.getStatusRegisterId());

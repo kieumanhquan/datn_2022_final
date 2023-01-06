@@ -7,4 +7,6 @@ public class SearchJobRegisterVM {
     private String name;
 
     private Long statusRegisterId;
+
+    private Long jobId;
 }

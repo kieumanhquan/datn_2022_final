@@ -55,7 +55,7 @@ public class JobController {
                 dashboardVM.getEndDate()));
     }
 
-    @GetMapping()
+    @GetMapping("")
     public List<Job> findAll() {
         return jobService.findAll();
     }
