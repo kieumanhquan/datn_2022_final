@@ -26,8 +26,10 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     Optional<User> findByPhoneNumber(String phoneNumber);
 
 
-    @Query(value = "select u from Users u " +
-            "where u.userName like :userName and u.phoneNumber like :phoneNumber " +
+    @Query(value = "" +
+            " select u from Users u " +
+            " where (u.userName = :userName or null = :userName or '' = :userName)" +
+            " and u.phoneNumber like :phoneNumber " +
             " and u.email like :email" )
     Page<User> findBySearchUserVm(@Param("userName") String name, @Param("phoneNumber") String phoneNumber, @Param("email") String email, Pageable pageable);
 }

@@ -112,10 +112,10 @@ public class UserServiceImpl implements UserService {
     public UserPaginationDto find(SearchUserVM searchUserVM, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         UserPaginationDto userPaginationDto = new UserPaginationDto();
-        userPaginationDto.setList(userRepository.findBySearchUserVm("%" + searchUserVM.getUserName().toLowerCase() + "%",
+        userPaginationDto.setList(userRepository.findBySearchUserVm( searchUserVM.getUserName().toLowerCase() ,
                 "%" + searchUserVM.getPhoneNumber() + "%", "%" + searchUserVM.getEmail() + "%",
                 pageable).stream().collect(Collectors.toList()));
-        userPaginationDto.setTotalPage((long) userRepository.findBySearchUserVm("%" + searchUserVM.getUserName().toLowerCase() + "%",
+        userPaginationDto.setTotalPage((long) userRepository.findBySearchUserVm(searchUserVM.getUserName().toLowerCase(),
                 "%" + searchUserVM.getPhoneNumber() + "%", "%" + searchUserVM.getEmail() + "%",
                 pageable).getTotalPages());
         return userPaginationDto;

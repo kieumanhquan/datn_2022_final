@@ -85,7 +85,7 @@ public class JobRepositoryImpl extends BaseRepository implements JobRepositoryEx
                 p_endrow=p_startrow+pageSize-1;
             }
 
-            query += " order by job."+orderName+" DESC ),count_all as( select count (*) total from tempselect )," +
+            query += " order by job.create_date DESC ),count_all as( select count (*) total from tempselect )," +
                     " paging as( select * from tempselect  where ROWNR between :p_startrow and :p_endrow " +
                     ") select p.*, c.total from paging p, count_all c ";
             parameters.put("p_startrow", p_startrow);

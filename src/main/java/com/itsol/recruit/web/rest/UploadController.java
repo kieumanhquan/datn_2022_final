@@ -27,26 +27,43 @@ public class UploadController {
 
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file
-            , @RequestParam("username") String username , @RequestParam("jobId") long jobId ) {
+            , @RequestParam("username") String username, @RequestParam("jobId") long jobId) {
         String message;
         try {
-            uploadCVService.save(username, file, jobId);
-            message = "Uploaded cv and apply job successfully: " + file.getOriginalFilename();
-            ResponseMessage responseMessage = new ResponseMessage(message);
-            return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
+            if (file.getSize() >= 10485760) {
+                message = "File CV phải nhỏ hơn 10mb";
+                ResponseMessage responseMessage = new ResponseMessage(message);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+            } else {
+//                if (file.getContentType() != "pdf"){
+//                    message = "File CV Không đúng định dạng";
+//                    ResponseMessage responseMessage = new ResponseMessage(message);
+//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+//                }else {
+//                    uploadCVService.save(username, file, jobId);
+//                    message = "Uploaded cv and apply job successfully: " + file.getOriginalFilename();
+//                    ResponseMessage responseMessage = new ResponseMessage(message);
+//                    return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
+//                }
+                uploadCVService.save(username, file, jobId);
+                message = "Uploaded cv and apply job successfully: " + file.getOriginalFilename();
+                ResponseMessage responseMessage = new ResponseMessage(message);
+                return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
+            }
+
         } catch (Exception e) {
             message = "Could not upload and register job the file: " + file.getOriginalFilename() + "!";
             ResponseMessage responseMessage = new ResponseMessage(message);
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(responseMessage);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
         }
     }
 
     @PostMapping("/uploadAvatar")// up avata
     public ResponseEntity<ResponseMessage> uploadAvatar(@RequestParam("file") MultipartFile file
-            , @RequestParam("userId") Long userId ) {
+            , @RequestParam("userId") Long userId) {
         String message;
         try {
-            uploadCVService.saveAvatar( file, userId);
+            uploadCVService.saveAvatar(file, userId);
             message = "Uploaded avatarName successfully: " + file.getOriginalFilename();
             ResponseMessage responseMessage = new ResponseMessage(message);
             return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
